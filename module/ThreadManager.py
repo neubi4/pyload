@@ -255,7 +255,7 @@ class ThreadManager:
     def assignJob(self):
         """assing a job to a thread if possible"""
 
-        if self.pause or not self.core.api.isTimeDownload(): return
+        if (self.pause or not self.core.api.isTimeDownload()) and not self.core.config["download"]["decrypt_if_paused"]: return
 
         #if self.downloaded > 20:
         #    if not self.cleanPyCurl(): return
@@ -288,7 +288,7 @@ class ThreadManager:
                     self.log.warning(_("Not enough space left on device"))
                     self.pause = True
 
-                if free and not self.pause:
+                if free and not self.pause and self.core.api.isTimeDownload():
                     thread = free[0]
                     #self.downloaded += 1
 
